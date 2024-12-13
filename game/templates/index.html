@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+  
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+    }
+  
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+  
+    .btn-success {
+      background-color: #28a745;
+      border: none;
+    }
+  
+    .btn-success:hover {
+      background-color: #1e7e34;
+    }
+  
+    .btn:active {
+      transform: scale(0.98);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+  
+<h1 class="text-center">Welcome to the Name Place Game</h1>
+<p class="text-center">Get ready to have fun with your friends!</p>
+<div class="text-center">
+    <a href="/create-game" class="btn btn-primary">Create a Game</a>
+    <a href="/join-game" class="btn btn-success">Join a Game</a>
+</div>
+{% endblock %}

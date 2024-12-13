@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center my-4">Game Room: {{ game.room_code }}</h1>
+
+    <!-- Player List Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3>Players:</h3>
+            <ul class="list-group">
+                {% for player in game.players.all %}
+                    <li class="list-group-item">{{ player.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Form to Submit Answers -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-3">Enter Your Answers</h2>
+            <form method="POST" id="game-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="name">Name (starts with {{ letter }}):</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="place">Place (starts with {{ letter }}):</label>
+                    <input type="text" id="place" name="place" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="animal">Animal (starts with {{ letter }}):</label>
+                    <input type="text" id="animal" name="animal" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="movie">Movie (starts with {{ letter }}):</label>
+                    <input type="text" id="movie" name="movie" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-3" id="submit-btn">Submit Answers</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Display Results if Available -->
+    {% if results %}
+        <div class="row">
+            <div class="col-12">
+                <h3>Results</h3>
+                <div class="alert alert-info">
+                    <p><strong>Name:</strong> {% if results.name.correct %} Correct! {% else %} Incorrect. {% endif %}</p>
+                    <p><strong>Place:</strong> {% if results.place.correct %} Correct! {% else %} Incorrect. {% endif %}</p>
+                    <p><strong>Animal:</strong> {% if results.animal.correct %} Correct! {% else %} Incorrect. {% endif %}</p>
+                    <p><strong>Movie:</strong> {% if results.movie.correct %} Correct! {% else %} Incorrect. {% endif %}</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Timer Section -->
+    <div class="row">
+        <div class="col-12">
+            <h4 id="timer" class="text-center"></h4>
+        </div>
+    </div>
+
+    <!-- Back to Home Button -->
+    <div class="text-center mt-4">
+        <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>
+
+<script>
+// JavaScript for timer
+var timeLeft = 60; // 1 minute timer
+var timerElement = document.getElementById("timer");
+
+function startTimer() {
+    var timerInterval = setInterval(function() {
+        timerElement.textContent = "Time left: " + timeLeft + " seconds";
+        timeLeft--;
+
+        if (timeLeft < 0) {
+            clearInterval(timerInterval);
+            timerElement.textContent = "Time's up!";
+            // Submit the form when time's up
+            document.getElementById("game-form").submit();
+            document.getElementById("submit-btn").disabled = true; // Disable submit after time's up
+        }
+    }, 1000);
+}
+
+// Start timer when the page loads
+startTimer();
+
+// Disable the submit button once it's clicked
+document.getElementById("game-form").addEventListener("submit", function() {
+    document.getElementById("submit-btn").disabled = true;
+});
+</script>
+{% endblock %}

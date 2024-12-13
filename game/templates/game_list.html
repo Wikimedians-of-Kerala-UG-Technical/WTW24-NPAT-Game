@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Active Games</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Room Code</th>
+            <th>Players</th>
+            <th>Join</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for game in games %}
+        <tr>
+            <td>{{ game.room_code }}</td>
+            <td>{{ game.player_set.count }}</td>
+            <td>
+                <a href="{% url 'game_room' game.room_code %}" class="btn btn-primary">Join</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3" class="text-center">No active games at the moment.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="/" class="btn btn-secondary">Back to Home</a>
+{% endblock %}
